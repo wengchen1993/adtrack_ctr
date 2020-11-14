@@ -143,11 +143,16 @@ def load(model, storage_dir="artefacts"):
     model
     storage_dir
     """
-    model_destination_path = os.path.join(storage_dir,
-                                          datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
-                                          "model.pkl")
+    # Timestamp based storage directory for tracking
+    model_destination_dir = os.path.join(storage_dir,
+                                         datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
 
-    with open(model_destination_path, "w") as f:
+    # Create storage directory if not exists
+    os.makedirs(model_destination_dir, exist_ok=True)
+
+    model_destination_path = os.path.join(model_destination_dir, "model.pkl")
+
+    with open(model_destination_path, "wb") as f:
         pickle.dump(model, f)
 
 
