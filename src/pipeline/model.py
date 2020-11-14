@@ -1,7 +1,9 @@
 from src.training.models.logit import Logit
+from src.training.models.xgboost import XGBoost
 
 available_models = {
-    'logit': Logit
+    'logit': Logit,
+    'xgb': XGBoost
 }
 
 
