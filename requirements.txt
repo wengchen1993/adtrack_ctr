@@ -1,0 +1,8 @@
+dask[complete]
+dill
+numpy
+pandas
+jupyter
+jupytext
+sklearn
+xgboost

@@ -1,0 +1,15 @@
+# Virtualenv
+tvenv
+
+# Cached objects
+__pycache__
+ipynb_checkpoints
+
+# Pycharm
+.idea/
+
+.DS_Store
+*.egg-info/
+*.egg
+build/*
+dist/*
