@@ -1,9 +1,9 @@
 # Virtualenv
-tvenv
+venv
 
 # Cached objects
 __pycache__
-ipynb_checkpoints
+**/.ipynb_checkpoints
 
 # Pycharm
 .idea/
@@ -12,4 +12,5 @@ ipynb_checkpoints
 *.egg-info/
 *.egg
 build/*
+**/build
 dist/*
