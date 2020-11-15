@@ -1,0 +1,27 @@
+2020-11-15 00:01:04,981 __main__: INFO     Launching ETL job ...
+2020-11-15 00:01:04,981 __main__: INFO     Preparing data extraction in the given directory ./data
+2020-11-15 00:02:41,141 __main__: INFO     Absolute counts of full data points population: 0    184447044
+1       456846
+Name: is_attributed, dtype: int64 .
+2020-11-15 00:02:42,755 __main__: INFO     Ratio of full data points population: 0    0.997529
+1    0.002471
+Name: is_attributed, dtype: float64 .
+2020-11-15 00:03:40,929 __main__: INFO     Absolute counts of sampled data points population: 0    1043154
+1     456846
+Name: is_attributed, dtype: int64 .
+2020-11-15 00:03:40,947 __main__: INFO     Ratio of sampled data points population: 0    0.695436
+1    0.304564
+Name: is_attributed, dtype: float64 .
+2020-11-15 00:03:43,492 __main__: INFO     Completed data extraction to generate train and test dataset.
+2020-11-15 00:03:43,493 __main__: INFO     Initialise transform job - feature engineering and model training ... 
+2020-11-15 00:03:43,506 src.pipeline.main: INFO     Created ml flow pipeline.
+2020-11-15 00:03:43,506 src.pipeline.main: INFO     Packed pipeline properties.
+2020-11-15 00:03:43,506 __main__: INFO     Begin model training ...
+2020-11-15 00:03:43,547 src.pipeline.main: INFO     Created GridSearch object.
+2020-11-15 00:13:25,891 __main__: INFO     Model training took 582.38 seconds.
+2020-11-15 00:13:27,716 __main__: INFO     Transform job completed.
+2020-11-15 00:13:27,716 __main__: INFO     Trained model achieved score 0.527071545053574 of recall_score.
+2020-11-15 00:13:27,716 __main__: INFO     Serialising model into artefacts ...
+2020-11-15 00:13:27,728 __main__: INFO     Model serialised into artefacts/2020-11-15_00-13-27/model.pkl .
+2020-11-15 00:13:27,729 __main__: INFO     Model serialization completed using pickle.
+2020-11-15 00:13:27,729 __main__: INFO     ETL job completed.
