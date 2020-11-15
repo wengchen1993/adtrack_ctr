@@ -11,11 +11,12 @@ from sklearn.model_selection import train_test_split
 from src.pipeline.main import MLPipeline
 from src.evaluation.model_performance import ModelPerformance
 
-
 import logging
 logging.basicConfig(level=logging.INFO,
-                    format='%(name)-12s: %(levelname)-8s %(message)s',
+                    format='%(asctime)-2s %(name)-4s: %(levelname)-8s %(message)s',
                     handlers=[logging.StreamHandler(), logging.FileHandler(f"logs/etl.log")])
+
+logger = logging.getLogger(__name__)
 
 RANDOM_STATE = 42
 
@@ -51,8 +52,8 @@ def extract(data_source: str, num_sampled_data: int) -> Tuple[pd.DataFrame, pd.D
     # Split the dataset into train and test (label name is pre-defined)
     y_label = 'is_attributed'
 
-    logging.info(f"Absolute counts of full data points population: {data_full[y_label].value_counts(0)} .")
-    logging.info(f"Ratio of full data points population: {data_full[y_label].value_counts(1)} .")
+    logger.info(f"Absolute counts of full data points population: {data_full[y_label].value_counts(0)} .")
+    logger.info(f"Ratio of full data points population: {data_full[y_label].value_counts(1)} .")
 
     # Perform undersampling while keep all positive samples
     data_pos_only = data_full[data_full[y_label] == 1]
@@ -65,8 +66,8 @@ def extract(data_source: str, num_sampled_data: int) -> Tuple[pd.DataFrame, pd.D
     # Concatenate to reform the dataset
     data_sampled = pd.concat([data_neg_sampled, data_pos_only], axis=0).reset_index(drop=True)
 
-    logging.info(f"Absolute counts of sampled data points population: {data_sampled[y_label].value_counts(0)} .")
-    logging.info(f"Ratio of sampled data points population: {data_sampled[y_label].value_counts(1)} .")
+    logger.info(f"Absolute counts of sampled data points population: {data_sampled[y_label].value_counts(0)} .")
+    logger.info(f"Ratio of sampled data points population: {data_sampled[y_label].value_counts(1)} .")
 
     features, labels = data_sampled.drop(columns=[y_label]), data_sampled[y_label]
 
@@ -120,11 +121,11 @@ def transform(train_data: pd.DataFrame,
     # Setup ML pipeline for training and test
     ml_pipe = MLPipeline(model_name, features_config)
 
-    logging.info("Begin model training ...")
+    logger.info("Begin model training ...")
     model_train_start = time.time()
     model = ml_pipe.train(train_X, train_y)
     model_train_end = time.time()
-    logging.info(f"Model training took {model_train_end - model_train_start:.5} seconds.")
+    logger.info(f"Model training took {model_train_end - model_train_start:.5} seconds.")
 
     # Setup evaluation object for multiple performance metrics query
     ml_metrics = ['recall_score']
@@ -155,6 +156,8 @@ def load(model, storage_dir="artefacts"):
     with open(model_destination_path, "wb") as f:
         pickle.dump(model, f)
 
+    logger.info(f"Model serialised into {model_destination_path} .")
+
 
 if __name__ == '__main__':
 
@@ -174,21 +177,21 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    logging.info("Launching ETL job ...")
+    logger.info("Launching ETL job ...")
 
-    logging.info(f"Preparing data extraction in the given directory {args.data_source}")
+    logger.info(f"Preparing data extraction in the given directory {args.data_source}")
     train_data, test_data = extract(args.data_source, args.num_sampled_data)
-    logging.info("Completed data extraction to generate train and test dataset.")
+    logger.info("Completed data extraction to generate train and test dataset.")
 
-    logging.info("Initialise transform job - feature engineering and model training ... ")
+    logger.info("Initialise transform job - feature engineering and model training ... ")
     model, performance_metrics = transform(train_data, test_data, args.model_name)
-    logging.info("Transform job completed.")
+    logger.info("Transform job completed.")
 
     for metric_name, metric_val in performance_metrics.items():
-        logging.info(f"Trained model achieved score {metric_val} of {metric_name}.")
+        logger.info(f"Trained model achieved score {metric_val} of {metric_name}.")
 
-    logging.info("Serialising model into artefacts ...")
+    logger.info("Serialising model into artefacts ...")
     load(model)
-    logging.info("Model serialization completed using pickle.")
+    logger.info("Model serialization completed using pickle.")
 
-    logging.info("ETL job completed.")
+    logger.info("ETL job completed.")
