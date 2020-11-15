@@ -567,6 +567,18 @@ class ModelPerformance:
 
 ### Performance Measurement
 
+<!-- #region -->
+There is a range of metrics that can be used to evaluate the model performance.  
+
+
+In the settings of binary classification, recall can be of interest if we want to predict an user will click on
+the advertisement when predicted with high probability.  
+
+Precision will be important however if it is costly to show non-interested advertisement for the user. 
+
+Area under precision-recall curve and ROC curve can be balanced metrics to measure the model performance.
+<!-- #endregion -->
+
 ```python
 ml_metrics = ['recall_score', 'roc_auc_score']
 ml_eval = ModelPerformance(model, ml_metrics)
@@ -580,6 +592,41 @@ performance_metrics = ml_eval.evaluate(test_X, test_y)
 for metric_name, metric_val in performance_metrics.items():
     print(f"Trained model achieved score {metric_val} of {metric_name}.")
 ```
+
+# Suggested Improvement
+
+
+Results obtained above are well below the industrial minimum, however this is done in rush and better strategies
+can improve the model performance.
+
+
+### 1. Richer feature generations
+
+
+Given that the data points are arranged in temporal sequence, historical features can be generated via aggreation
+of features using entity as reference, for example ip_address.
+
+Velocity features such as the time between clicks can be computed as well to help improve not only CTR but check
+if an user is potentially a bot spamming clicks.
+
+
+### 2. Feature Importance
+
+
+Feature importance can be retrieved using:
+```
+model.best_estimator_.named_steps['clf'].feature_importances_
+```
+where it can then be plotted using SHAP to analyse the impact of features to the model.  
+
+This can help reduce the dimension and training time as non-contributing features can be removed.
+
+
+### 3. Larger parallelisation process
+
+
+Use Spark to extract and engineer features in a parallel fashion enable speed up in preprocessing.  
+Same can be applied to training which leads to scalable training data points.
 
 ```python
 
